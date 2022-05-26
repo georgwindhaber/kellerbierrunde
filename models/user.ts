@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const UserSchema = new mongoose.Schema({
-  name: String,
+export type IUser = {
+  email: string;
+  password: string;
+  isValidPassword: Function;
+};
+
+const UserSchema = new mongoose.Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
@@ -16,7 +21,7 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.methods.isValidPassword = async function (password: string) {
   const compare = await bcrypt.compare(password, this.password);
-  
+
   return compare;
 };
 
