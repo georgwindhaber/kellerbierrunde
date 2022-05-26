@@ -1,18 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import passport from "passport";
+import initAuthStrategies from "../../lib/auth";
 import dbConnect from "../../lib/dbConnect";
+import runMiddleware from "../../lib/middleware";
 import User from "../../models/user";
 
-export default async function login(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // get user from db
-  const { email } = await req.body;
-  await dbConnect();
-  const users = await User.find({ email });
+initAuthStrategies();
 
-  // Check if password matches
-  if (users.length) {
-  }
-  res.send({ users });
+export default async function login(req: NextApiRequest, res: NextApiResponse) {
+  // get user from db
+
+  await runMiddleware(req, res, passport.authenticate("login"));
+
+  const { email } = await req.body;
+
+  res.send({ email });
 }
