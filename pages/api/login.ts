@@ -10,7 +10,11 @@ initAuthStrategies();
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   // get user from db
 
-  await runMiddleware(req, res, passport.authenticate("login"));
+  await runMiddleware(
+    req,
+    res,
+    passport.authenticate("login", { session: false })
+  );
 
   const { email } = await req.body;
 

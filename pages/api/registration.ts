@@ -11,11 +11,11 @@ export default async function registration(
 ) {
   // get user from db
 
-  const response = await runMiddleware(
+  await runMiddleware(
     req,
     res,
     passport.authenticate("registration", { session: false })
   );
 
-  res.send({ response });
+  res.send({});
 }
